@@ -1,4 +1,5 @@
-import 'package:dart_quill_delta/dart_quill_delta.dart';
+import 'package:flutter_quill_delta_from_html/package/dart_quill_delta/dart_quill_delta.dart';
+
 import 'package:html/dom.dart' as dom;
 
 /// Interface for defining a custom block handler for HTML to Delta conversion.

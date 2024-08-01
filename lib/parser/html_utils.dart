@@ -2,6 +2,7 @@ import 'package:flutter_quill_delta_from_html/parser/indent_parser.dart';
 import 'colors.dart';
 import 'font_size_parser.dart';
 import 'line_height_parser.dart';
+import 'package:flutter_quill_delta_from_html/package/dart_quill_delta/dart_quill_delta.dart';
 
 /// Checks if the given [tag] corresponds to an inline HTML element.
 ///
@@ -58,7 +59,8 @@ Map<String, dynamic> parseStyleAttribute(String style) {
           final color = validateAndGetColor(value);
           attributes['background'] = color;
           break;
-        case 'padding-left' || 'padding-right':
+        case 'padding-left':
+        case 'padding-right':
           final indentation = parseToIndent(value);
           if (indentation != 0) {
             attributes['indent'] = indentation;
@@ -105,21 +107,22 @@ Map<String, dynamic> parseStyleAttribute(String style) {
           break;
       }
     } else {
-      switch (style) {
-        case 'justify' || 'center' || 'left' || 'right':
-          attributes['align'] = style;
-        case 'rtl':
-          attributes['direction'] = 'rtl';
-        case 'true' || 'false':
-          // Treat as check list
-          if (style == 'true') {
-            attributes['list'] = 'checked';
-          } else {
-            attributes['list'] = 'unchecked';
-          }
-          break;
-        default:
-          break;
+      if (style == 'justify' ||
+          style == 'center' ||
+          style == 'left' ||
+          style == 'right') {
+        attributes['align'] = style;
+      } else if (style == 'rtl') {
+        attributes['direction'] = 'rtl';
+      } else if (style == 'true' || style == 'false') {
+        // Treat as check list
+        if (style == 'true') {
+          attributes['list'] = 'checked';
+        } else {
+          attributes['list'] = 'unchecked';
+        }
+      } else {
+        // Default case (if needed)
       }
     }
   }
